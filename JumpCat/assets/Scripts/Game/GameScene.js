@@ -39,6 +39,8 @@ cc.Class({
             type :cc.Node,
         },
 
+        dead_com: null,
+
         // 死亡线
         dead_line :{
             default: null,
@@ -54,7 +56,8 @@ cc.Class({
     onLoad () {
         this.player.getComponent('Player').game = this;
         this.node.getComponent('Stage').game = this;
-
+        this.dead_com = this.dead_page.getComponent('DeadPage');
+        this.dead_com.game = this;
         this.dead_line.active = false;
     },
 
@@ -90,13 +93,9 @@ cc.Class({
 
     showDeadPage(){
         // todo 设置分数
-
+        this.dead_com.showPage();
         this.setDeadPageVisible(true);        
-    },
-
-    backToMenu(){
-        cc.director.loadScene("Menu");
-    },
+    },    
 
     hideDeadPage(){
         this.setDeadPageVisible(false);

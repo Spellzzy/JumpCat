@@ -49,7 +49,9 @@ cc.Class({
 
     updateLines(){
         // 更新层
-        this.line = Math.floor(this.node.y / 240);
+        this.line = Math.floor(this.node.y / 240) + 1;
+
+        console.log("GENG XIN LINE -> " + this.line)
     },
 
     update (dt) {

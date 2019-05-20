@@ -27,7 +27,6 @@ cc.Class({
         angle_cos:0,
         angle_sin:0,
 
-        platform_index : 0,
         start_pos: new cc.v2(0,0),
 
         stage_node:{
@@ -37,8 +36,6 @@ cc.Class({
         stage_com: null,
 
         current_platform : null,
-
-        score : 0,
     },
 
     onLoad () {
@@ -148,7 +145,7 @@ cc.Class({
                 // 触发背面爬上去
                 var action1 = cc.moveTo(1, playerPos.x,platformPos.y + platform.height /2 + player.height /2);
                 var action2 = cc.moveTo(2, platformPos.x,platformPos.y + platform.height /2 + player.height /2);
-                var finished = cc.callFunc(this.JumpOver,this, 100);
+                var finished = cc.callFunc(this.JumpOver,this);
                 this.current_platform = platform;
                 action = cc.sequence(action1, action2, finished);
             }
@@ -196,11 +193,9 @@ cc.Class({
             this.jumpState = false;
 
             // 直接落上去
-            console.log("Enter -----------> " + other.node.name);
-
             // 位置校正动画
             var act1 = cc.moveTo(1, other.node.position.x,other.node.position.y + other.node.height/ 2 + self.node.height /2 -10);
-            var finished = cc.callFunc(this.JumpOver,this, 100);
+            var finished = cc.callFunc(this.JumpOver,this);
             var action = cc.sequence(act1, finished);
             this.current_platform = other.node
             this.node.runAction(action);
@@ -231,13 +226,9 @@ cc.Class({
         //this.node.color = cc.Color.WHITE;
     },
 
-    JumpOver(target, score){
-        this.actionState = false;
-        // 加分
-        this.score += 50;
-        console.log("this.score  --- " + this.score);
-        this.game.setScore(this.score);
-        this.MoveCamera(this.current_platform)
+    JumpOver(target){
+        this.actionState = false;        
+        this.stage_com.Move(this.current_platform)
 
         if(this.node.y > 240)
         {
@@ -245,30 +236,6 @@ cc.Class({
             this.game.setBottomLine(false);
         }
     },    
-
-    MoveCamera(otherNode)
-    {
-        var distance = otherNode.y - this.start_pos.y;
-        if (this.start_pos.y > 240 + otherNode.height /2)
-        {
-            distance += this.start_pos.y - 240 + otherNode.height /2;
-        }
-
-        var platform = otherNode.getComponent("Platform")
-        console.log("in  move caaaaa")
-        if (this.platform_index < platform.index && platform.isScore)
-        {
-            // 从低层跳到高层了
-            // 移动视角  所有平台 和 主角 下移
-            this.stage_com.PlatformsDown(distance);
-        }
-        if (platform.isScore)
-        {
-            // todo 加分
-            platform.isScore = false;
-        }
-        this.platform_index = platform.index;
-    },
 
     update (dt) {
         if (this.jumpState) {

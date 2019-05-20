@@ -77,7 +77,6 @@ var RandomConst = cc.Class({
             var lines_init =  [3, 4, 5, 6, 7, 8];
             var lines_const = new Array;
             for (let i = 0; i < 6; i++) {
-                console.log(" lines_const[i] 22 --> " + lines_const)
                 if(lines_init[i] > start_lines)
                     lines_const.push(lines_init[i]);
             }
@@ -86,9 +85,6 @@ var RandomConst = cc.Class({
             for (let index = 0; index < count; index++) {
                 var ran_index = Math.floor(Math.random()*lines_const.length)
                 lines[index] = lines_const[ran_index]
-                console.log(" ran_index  --> " + ran_index)
-                console.log(" lines[index]  --> " + lines[index])
-
                 if(ran_index > -1)
                 {
                     lines_const.splice(ran_index,1);
